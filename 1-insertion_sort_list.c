@@ -11,7 +11,7 @@ void insertion_sort_list(listint_t **list)
 {
 	node temp = NULL, prev_n = NULL, current = NULL;
 
-	if (!list || !(*list) || list_len(*list) <= 2)
+	if (!list || !(*list) || list_len(*list) < 2)
 		return;
 
 	current = (*list)->next;
