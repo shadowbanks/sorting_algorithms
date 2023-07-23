@@ -9,9 +9,9 @@
  */
 void insertion_sort_list(listint_t **list)
 {
-	listint_t *curr, *tmp, *current;
+	listint_t *curr, *tmp;
 
-	if (*list == NULL || (*list)->next == NULL)
+	if (*list == NULL || (*list)->next == NULL || list_len(*list) < 2)
 		return;
 
 	curr = (*list)->next;
@@ -35,14 +35,27 @@ void insertion_sort_list(listint_t **list)
 				*list = curr;
 
 			tmp = curr->prev;
-			current = *list;
-			while (current)
-			{
-				printf("%d ", current->n);
-				current = current->next;
-			}
-			printf("\n");
+			print_list(*list);
 		}
 		curr = curr->next;
 	}
+}
+
+/**
+ * list_len - Count a list of integers
+ *
+ * @list: The list to be counted
+ * Return: The list lenght
+ */
+int list_len(const listint_t *list)
+{
+	int i;
+
+	i = 0;
+	while (list)
+	{
+		++i;
+		list = list->next;
+	}
+	return (i);
 }
