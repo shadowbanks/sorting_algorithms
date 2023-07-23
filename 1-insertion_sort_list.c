@@ -9,51 +9,40 @@
  */
 void insertion_sort_list(listint_t **list)
 {
-	node temp = NULL, prev_n = NULL, current = NULL;
+	listint_t *curr, *tmp, *current;
 
-	if (!list || !(*list) || list_len(*list) < 2)
+	if (*list == NULL || (*list)->next == NULL)
 		return;
 
-	current = (*list)->next;
-
-	for (; current != NULL; current = current->next)
+	curr = (*list)->next;
+	while (curr != NULL)
 	{
-		for (temp = current; temp != NULL; temp = temp->prev)
+		tmp = curr->prev;
+		while (tmp != NULL && tmp->n > curr->n)
 		{
-			prev_n = temp->prev;
-			if (prev_n != NULL && temp->n < prev_n->n)
+			if (tmp->prev)
+				tmp->prev->next = curr;
+			if (curr->next)
+				curr->next->prev = tmp;
+
+			tmp->next = curr->next;
+			curr->prev = tmp->prev;
+
+			curr->next = tmp;
+			tmp->prev = curr;
+
+			if (curr->prev == NULL)
+				*list = curr;
+
+			tmp = curr->prev;
+			current = *list;
+			while (current)
 			{
-				prev_n->next = temp->next;
-				if (prev_n->next != NULL)
-					temp->next->prev = prev_n;
-				temp->next = prev_n;
-				temp->prev = prev_n->prev;
-				if (temp->prev != NULL)
-					prev_n->prev->next = temp;
-				prev_n->prev = temp;
-				if (temp->prev == NULL)
-					*list = temp;
-				print_list(*list);
+				printf("%d ", current->n);
+				current = current->next;
 			}
+			printf("\n");
 		}
+		curr = curr->next;
 	}
-}
-
-/**
- * list_len - Count a list of integers
- *
- * @list: The list to be counted
- * Return: The list lenght
- */
-int list_len(const listint_t *list)
-{
-	int i;
-
-	i = 0;
-	while (list)
-	{
-		++i;
-		list = list->next;
-	}
-	return (i);
 }
