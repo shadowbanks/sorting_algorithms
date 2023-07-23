@@ -18,21 +18,42 @@ void insertion_sort_list(listint_t **list)
 
 	for (; current != NULL; current = current->next)
 	{
-		temp = current;
-		for (; temp != NULL; temp = temp->prev)
+		for (temp = current; temp != NULL; temp = temp->prev)
 		{
 			prev_n = temp->prev;
 			if (prev_n != NULL && temp->n < prev_n->n)
 			{
-				temp->prev = temp->prev->prev;
-				prev_n->prev = prev_n->next;
 				prev_n->next = temp->next;
-				temp->next->prev = prev_n;
+				if (prev_n->next != NULL)
+					temp->next->prev = prev_n;
 				temp->next = prev_n;
-				print_list(list);
+				temp->prev = prev_n->prev;
+				if (temp->prev != NULL)
+					prev_n->prev->next = temp;
+				prev_n->prev = temp;
+				if (temp->prev == NULL)
+					*list = temp;
+				print_list(*list);
 			}
-			else
-				break;
 		}
 	}
+}
+
+/**
+ * list_len - Count a list of integers
+ *
+ * @list: The list to be counted
+ * Return: The list lenght
+ */
+int list_len(const listint_t *list)
+{
+	int i;
+
+	i = 0;
+	while (list)
+	{
+		++i;
+		list = list->next;
+	}
+	return (i);
 }
