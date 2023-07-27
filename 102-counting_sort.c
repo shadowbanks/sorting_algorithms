@@ -13,12 +13,9 @@ void counting_sort(int *array, size_t size)
 
 	if (!array || size < 2)
 		return;
-
 	len = size;
-	/*Find the largest number in the array*/
 	max = array[0];
-
-	for (i = 1; i < len; i++)
+	for (i = 1; i < len; i++)/*Find the largest number in the array*/
 	{
 		if (array[i] > max)
 			max = array[i];
@@ -27,14 +24,10 @@ void counting_sort(int *array, size_t size)
 	count = malloc(sizeof(int) * (max + 1));
 	if (!count)
 		return;
-
-	/* Initialize count array with all zeros */
-	for (i = 0; i <= max; i++)
+	for (i = 0; i <= max; i++)/* Initialize count array with all zeros */
 		count[i] = 0;
-
 	for (i = 0; i < len; i++)
 		count[array[i]]++;
-
 	for (i = 1; i <= max; i++)
 		count[i] += count[i - 1];
 
@@ -46,16 +39,13 @@ void counting_sort(int *array, size_t size)
 		free(count);
 		return;
 	}
-
 	for (i = len - 1; i >= 0; i--)
 	{
 		result[count[array[i]] - 1] = array[i];
 		count[array[i]]--;
 	}
-
 	for (i = 0; i < len; i++)
 		array[i] = result[i];
-
 	free(result);
 	free(count);
 }
