@@ -12,7 +12,6 @@ void split(int *array, int left, int right);
 void merge_sort(int *array, size_t size)
 {
 	int len = size;
-
 	if (!array || len < 2)
 		return;
 	split(array, 0, len - 1);
@@ -21,7 +20,6 @@ void merge_sort(int *array, size_t size)
 void split(int *array, int left, int right)
 {
 	int middle = 0;
-
 	if (left < right)
 	{
 		middle = (left + right) / 2;
@@ -36,29 +34,55 @@ void split(int *array, int left, int right)
 
 void merge(int *array, int left, int middle, int right)
 {
-	int i = 0, j = 0, k = 0, *arrayTemp = NULL;
+	int i = 0, j = 0, k = 0, *leftArr = NULL, *rightArr = NULL, *arrayTemp = NULL;
 	int num = middle - left + 1;
 	int num2 = right - middle;
 
+	(void)leftArr;
+	(void)rightArr;
 	arrayTemp = malloc(sizeof(int) * (num + num2));
 	if (!arrayTemp)
 		return;
-
+	/*
+	leftArr = malloc(sizeof(int) * (num + 1));
+	if (!leftArr)
+		return;
+	rightArr = malloc(sizeof(int) * (num2 + 1));
+	if (!rightArr)
+	{
+		free(leftArr);
+		return;
+	}*/
+	
 	/*Copy the data to a temp array leftArr and rightArr*/
 	for (; i < num; i++)
-		arrayTemp[i] = array[left + i];
-	for (j = 0; j < num2; j++)
-		arrayTemp[num + j] = array[middle + 1 + j];
+		arrayTemp[k++] = array[left + i];
+		/*leftArr[i] = array[left + i];*/
+	for (j = middle + 1; j <= right; j++)
+		arrayTemp[k++] = array[j];
+		/*rightArr[j] = array[middle + 1 + j];*/
 
-	printf("Merging...\n[left]: ");
-	print_array(arrayTemp, num);
-	printf("[right]: ");
-	print_array(arrayTemp + num, num2);
 	/*Place vallue in right order in the array*/
+	/*
 	i = 0;
-	j = num;
+	j = 0;
 	k = left;
-	while (i < num && j < num + num2)
+	while (i < num && j < num2)
+	{
+		if (leftArr[i] <= rightArr[j])
+		{
+			array[k] = leftArr[i];
+			i++;
+		}
+		else
+		{
+			array[k] = rightArr[j];
+			j++;
+		}
+		k++;
+	}*/
+	i = 0, j = middle + 1; k = left;
+	while (i < num && j <= right)
 	{
 		if (arrayTemp[i] <= arrayTemp[j])
 			array[k++] = arrayTemp[i++];
@@ -66,14 +90,29 @@ void merge(int *array, int left, int middle, int right)
 			array[k++] = arrayTemp[j++];
 	}
 
+	/*Any remaining data on the left*/
+	/*
+	while (i < num)
+	{
+		array[k] = leftArr[i];
+		i++, k++;
+	}
+
+	/\*Any remaining data on the right*\/
+	while (j < num2)
+	{
+		array[k] = rightArr[j];
+		j++, k++;
+	}
+
+	free(leftArr);
+	free(rightArr);
+	*/
 	while (i < num)
 		array[k++] = arrayTemp[i++];
 
-	while (j < num + num2)
+	while (j <= right)
 		array[k++] = arrayTemp[j++];
-
-	printf("[Done]: ");
-	print_array(array + left, num + num2);
 
 	free(arrayTemp);
 }
